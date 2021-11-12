@@ -17,4 +17,4 @@ def solution(lottos, win_nums):
     else:
         answer.append(6)
 
-    return answera
+    return answer
