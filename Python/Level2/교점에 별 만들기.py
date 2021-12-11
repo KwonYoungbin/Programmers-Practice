@@ -1,27 +1,30 @@
-INF = int(1e9)
-
-# 테스트 케이스 시간 초과 있음.
 def solution(line):
-    crossed = []
-    minx, miny, maxx, maxy = INF, INF, -INF, -INF
+    x_list, y_list = [], []
 
     for i in range(len(line) - 1):
         a, b, e = line[i]
         for j in range(i + 1, len(line)):
             c, d, f = line[j]
             bottom = a * d - b * c
+            if bottom == 0:
+                continue
+
             xtop = b * f - e * d
             ytop = e * c - a * f
-            if bottom != 0 and xtop % bottom == 0 and ytop % bottom == 0:
+            if xtop % bottom == 0 and ytop % bottom == 0:
                 nx = xtop // bottom
                 ny = ytop // bottom
-                minx, miny = min(minx, nx), min(miny, ny)
-                maxx, maxy = max(maxx, nx), max(maxy, ny)
-                crossed.append((nx, ny))
+                x_list.append(int(nx))
+                y_list.append(int(ny))
 
-    answer = [['.'] * (maxx - minx + 1) for _ in range(maxy - miny + 1)]
+    min_x, max_x = min(x_list), max(x_list)
+    min_y, max_y = min(y_list), max(y_list)
+    x_size = max_x - min_x + 1
+    y_size = max_y - min_y + 1
 
-    for x, y in crossed:
-        answer[maxy - y][x - minx] = '*'
+    answer = [['.'] * x_size for _ in range(y_size)]
+
+    for x, y in zip(x_list, y_list):
+        answer[max_y - y][x - min_x] = '*'
 
     return [''.join(result) for result in answer]
